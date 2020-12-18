@@ -1,0 +1,12 @@
+[package]
+name = "splitty"
+version = "0.1.0"
+authors = ["dystroy <denys.seguret@gmail.com>"]
+repository = "https://github.com/Canop/splitty"
+description = "a string splitter taking quotes into account"
+edition = "2018"
+keywords = ["string", "split", "quote", "no-std"]
+license = "MIT"
+categories = ["parsing", "no-std"]
+
+[dependencies]

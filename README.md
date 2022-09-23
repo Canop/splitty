@@ -16,9 +16,9 @@
 
 A no-std string splitter for which spaces between quotes aren't separators.
 
-Quotes not starting or ending a substring (ie with spaces or ends on the relevant side) are handled as ordinary characters.
+Quotes not starting or ending a substring are handled as ordinary characters.
 
-```
+```rust
 use splitty::*;
 
 let cmd = "xterm -e \"vi /some/path\"";

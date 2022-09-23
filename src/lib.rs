@@ -16,9 +16,7 @@
 //! assert_eq!(token.next(), None);
 //! ```
 //!
-//! Quotes not starting or ending a substring
-//! (ie with spaces or ends on the relevant side)
-//! are handled as ordinary characters.
+//! Quotes not starting or ending a substring are handled as ordinary characters.
 //!
 //! Splitty has a limited set of features but is tested for corner-cases:
 //!

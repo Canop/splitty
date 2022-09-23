@@ -1,6 +1,6 @@
 /// A string splitter splitting on a specific char unless it's
 ///  part of a substring starting and ending with a quote (`"`).
-/// Quotes around a substring are removed.
+/// Quotes around a substring are removed if required.
 pub struct SplitUnquotedChar<'s> {
     src: &'s str,
     unwrap_quotes: bool,
@@ -8,6 +8,22 @@ pub struct SplitUnquotedChar<'s> {
 }
 
 impl<'s> SplitUnquotedChar<'s> {
+    /// Create a new token iterator
+    ///
+    /// ```
+    /// let cmd = r#"Type "rhit -p blog""#;
+    ///
+    /// let mut split = splitty::SplitUnquotedChar::new(cmd, ' ');
+    /// assert_eq!(split.next(), Some("Type"));
+    /// assert_eq!(split.next(), Some("\"rhit -p blog\""));
+    /// assert_eq!(split.next(), None);
+    ///
+    /// let mut split = splitty::SplitUnquotedChar::new(cmd, ' ')
+    ///     .unwrap_quotes(true);
+    /// assert_eq!(split.next(), Some("Type"));
+    /// assert_eq!(split.next(), Some("rhit -p blog"));
+    /// assert_eq!(split.next(), None);
+    /// ```
     pub fn new(src: &'s str, delimitor: char) -> Self {
         Self {
             src,
@@ -15,7 +31,7 @@ impl<'s> SplitUnquotedChar<'s> {
             delimitor,
         }
     }
-    /// set whether token starting and ending qui a quote
+    /// Set whether token starting and ending with a quote
     /// should have them removed
     pub fn unwrap_quotes(&self, b: bool) -> Self {
         Self {
@@ -72,15 +88,15 @@ impl<'s> Iterator for SplitUnquotedChar<'s> {
     }
 }
 
-/// return a new iterator of the the whitespace separated tokens
+/// Return a new iterator of the the whitespace separated tokens
 /// of the given string, taking quotes into account
-pub fn split_unquoted_whitespace<'s>(src: &'s str) -> SplitUnquotedChar<'s> {
+pub fn split_unquoted_whitespace(src: & str) -> SplitUnquotedChar {
     SplitUnquotedChar::new(src, ' ')
 }
 
-/// return a new iterator of the the `delimitor` separated tokens
+/// Return a new iterator of the the `delimitor` separated tokens
 /// of the given string, taking quotes into account
-pub fn split_unquoted_char<'s>(src: &'s str, delimitor: char) -> SplitUnquotedChar<'s> {
+pub fn split_unquoted_char(src: &str, delimitor: char) -> SplitUnquotedChar {
     SplitUnquotedChar::new(src, delimitor)
 }
 

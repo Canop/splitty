@@ -46,8 +46,8 @@ impl<'s> Iterator for SplitUnquotedChar<'s> {
     type Item = &'s str;
 
     fn next(&mut self) -> Option<&'s str> {
-        // we ignore spaces at the start
-        self.src = self.src.trim_start();
+        // we ignore delimitors at the start
+        self.src = self.src.trim_start_matches(self.delimitor);
         let mut char_indices = self.src.char_indices();
         if let Some((_, c0)) = char_indices.next() {
             let mut previous = c0;
@@ -133,4 +133,16 @@ mod split_unquoted_whitespace_test {
         t!(r#"""""# -> ["\""]);
         t!(r#""""""# -> ["\"\""]);
     }
+}
+
+#[test]
+fn test_issue_1(){
+    let s = r#"1,2,3,4"#;
+    let mut it = split_unquoted_char(s, ',');
+    assert_eq!(it.next(), Some("1"));
+    assert_eq!(it.next(), Some("2"));
+    assert_eq!(it.next(), Some("3"));
+    assert_eq!(it.next(), Some("4"));
+    assert_eq!(it.next(), None);
+    assert_eq!(it.next(), None);
 }

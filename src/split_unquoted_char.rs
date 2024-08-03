@@ -63,7 +63,7 @@ impl<'s> Iterator for SplitUnquotedChar<'s> {
                         let token = if self.unwrap_quotes {
                             &self.src[1..bi - 1]
                         } else {
-                            self.src
+                            &self.src[..bi]
                         };
                         self.src = &self.src[bi..];
                         return Some(token);
@@ -145,4 +145,12 @@ fn test_issue_1(){
     assert_eq!(it.next(), Some("4"));
     assert_eq!(it.next(), None);
     assert_eq!(it.next(), None);
+}
+
+#[test]
+fn test_issue_2() {
+    let mut token = split_unquoted_whitespace("\"one\" two").unwrap_quotes(false);
+    assert_eq!(token.next(), Some("\"one\""));
+    assert_eq!(token.next(), Some("two"));
+    assert_eq!(token.next(), None);
 }

@@ -11,17 +11,21 @@ impl<'s> SplitUnquotedChar<'s> {
     /// Create a new token iterator
     ///
     /// ```
-    /// let cmd = r#"Type "rhit -p blog""#;
+    /// let cmd = r#"Type "rhit -p blog" or "rhit --path blog""#;
     ///
     /// let mut split = splitty::SplitUnquotedChar::new(cmd, ' ');
     /// assert_eq!(split.next(), Some("Type"));
     /// assert_eq!(split.next(), Some("\"rhit -p blog\""));
+    /// assert_eq!(split.next(), Some("or"));
+    /// assert_eq!(split.next(), Some("\"rhit --path blog\""));
     /// assert_eq!(split.next(), None);
     ///
     /// let mut split = splitty::SplitUnquotedChar::new(cmd, ' ')
     ///     .unwrap_quotes(true);
     /// assert_eq!(split.next(), Some("Type"));
     /// assert_eq!(split.next(), Some("rhit -p blog"));
+    /// assert_eq!(split.next(), Some("or"));
+    /// assert_eq!(split.next(), Some("rhit --path blog"));
     /// assert_eq!(split.next(), None);
     /// ```
     pub fn new(src: &'s str, delimitor: char) -> Self {
